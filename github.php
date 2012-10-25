@@ -1,3 +1,3 @@
 <?php
-	exec('/usr/local/checkout');
+	exec('/usr/local/bin/checkout');
 ?>
