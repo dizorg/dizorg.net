@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Real Time Twitter Feed</title>
+        <meta name="description" content="Real Time UFC Twitter Streaming Feed">
+        <meta name="keywords" content="real time,real-time,ufc,feed,twitter streaming">
+	<meta name="viewport" content="width=device-width">
+	<meta name="robots" content=nofollow>
+
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	<script src="//www.dizorg.net:443/socket.io/socket.io.js"></script>
+	<script>
+	if(!("WebSocket" in window)){
+		alert("WebSockets not present, please upgrade your browser.");
+	}
+	function realtime(data){
+		payload=eval(data);
+		var p = $("<div class='tweet' style='display:none'><div class='content'><a class='main-screenname' href='http://www.twitter.com/" + payload.user.screen_name + "/status/" + payload.id_str + "'>"+ payload.user.screen_name + "</a> " + payload.text + "</div></div>");
+		if($('#tweets div.tweet').size() > 100) {
+			$('#tweets div.tweet:last').slideDown(100, function() {
+				$(this).remove();
+			});
+		}
+		$('#tweets').prepend(p);
+		p.slideDown(140);
+	}
+	var socket = io.connect('http://www.dizorg.net:443/');
+	socket.on('news', function(data){realtime(data)});
+	</script>
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Add your site or application content here -->
+
+	<div id="disclaimer">
+		<p>This proof-of-concept was built using node 0.8.8 and some modules, over nginx 1.2.3 --with-nginx_tcp_proxy_module. Use #dizorg to see it in action!</p>
+		<p>follow me: <a href='http://twitter.com/dizorg'>twitter</a></p>
+		<p>fork me: <a href='https://github.com/dizorg/twitterstream-ws'>github</a></p>
+	</div>
+	<div id="concurrent"></div>
+	<div id="tweets">
+	</div>
+
+        <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="js/plugins.js"></script>
+        <script src="js/main.js"></script>
+
+        <script>
+            var _gaq=[['_setAccount','UA-1923668-1'],['_trackPageview']];
+            (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+            g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+            s.parentNode.insertBefore(g,s)}(document,'script'));
+        </script>
+    </body>
+</html>
