@@ -14,20 +14,20 @@
 
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="css/fontface.css" type="text/css" charset="utf-8">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="favicon.js"></script>
-	<script>
-	(function(){
-	    var count = 0;
-	    Piecon.setOptions({fallback: 'force'});
-	    var i = setInterval(function(){
-	      if (++count > 100) { Piecon.reset(); clearInterval(i); return false; }
-	      Piecon.setProgress(count);
-	    }, 250);
-	})();
-	</script>
+	<style type="text/css" media="screen">
+		h1.fontface {font: 60px/68px 'BearpawRegular', Arial, sans-serif;letter-spacing: 0;}
 
+		p.style1 {font: 18px/27px 'BearpawRegular', Arial, sans-serif;}
+		
+		#container {
+			width: 800px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	</style>
     </head>
     <body>
         <!--[if lt IE 7]>
@@ -35,6 +35,12 @@
         <![endif]-->
 
         <!-- Add your site or application content here -->
+	<div id="container">
+		<h1 class="fontface">DIZORG.NET</h1>
+		<p class="style1">A place where things happens to be happening. Always under construction...</p>
+		<p class="style1"><a href="html5/webpm-video.htm">webpm demo</a>
+
+	</div>
 
         <script>window.jQuery || document.write('<script src="js/vendor/jquery-1.8.2.min.js"><\/script>')</script>
         <script src="js/plugins.js"></script>
