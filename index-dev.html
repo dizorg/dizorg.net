@@ -58,9 +58,9 @@
       $('#tweets').prepend(p);
       p.slideDown(140);
     }
-    var socket = io.connect('http://www.dizorg.net:443/');
+    var socket = io.connect('//ws.dizorg.net/');
     socket.on('ip',function(IP){
-      channel = io.connect('http://www.dizorg.net:443/'+IP.ip);
+      channel = io.connect('//www.dizorg.net/'+IP.ip);
       channel.on('connect',function(){
         channel.emit('channel',IP.ip);
         console.log('channel: '+IP.ip);
