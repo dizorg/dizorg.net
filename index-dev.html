@@ -16,66 +16,78 @@
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.6.2.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	<script src="socket.io.js"></script>
-	<script>
-	if(!("WebSocket" in window)){
-                alert("WebSockets not present, please upgrade your browser to the latest chrome, firefox, safari, or opera.");
-	}
-	var start_time = Math.floor(new Date().getTime()/1000);
-	var IP = '';
-	var channel;
-	var mycount = 0;
-	function msgspsec(){
-		mycount++;
-		now=Math.floor(new Date().getTime()/ 1000);
-		if(now > start_time){
-			$('#msgps').html(mycount/(now/start_time)+' messages per second.');
-			start_time=Math.floor(new Date().getTime()/1000);
-			mycount=0;
-		} 
-	}
-	function realtime(data){
-		msgspsec();
-                payload=eval(data);
-                var p = $("<div class='tweet' style='display:none'><div class='content'><a class='main-screenname' href='http://www.twitter.com/" + payload.user.screen_name + "/status/" + payload.id_str + "'>"+ payload.user.screen_name + "</a> " + payload.text + "</div></div>");
-                if($('#tweets div.tweet').size() > 100) {
-                        $('#tweets div.tweet:last').slideDown(100, function() {
-                                $(this).remove();
-                        });
-                }
-                $('#tweets').prepend(p);
-		p.slideDown(140);
-        }
-	var socket = io.connect('http://www.dizorg.net:443/');
-	socket.on('ip',function(IP){
-		channel = io.connect('http://www.dizorg.net:443/'+IP.ip);
-		channel.on('connect',function(){
-			channel.emit('channel',IP.ip);
-			console.log('channel: '+IP.ip);
-		});
-		channel.on('news',function(data){realtime(data)});
-	});
-        socket.on('news', function(data){realtime(data)});
-	socket.on('stat', function(stat){
-		stats = eval(stat);
-		$('#concurrent').html(stats.concurrent + ' connected clients. ');
-	});
-	socket.on('count',function(count){
-		$('#count').html(count+' messages received');
-	});   
-	socket.on('connect',function(){
-		$.getJSON('getip.php',function(IP){
-			socket.emit('ip',IP);
-		});
-	});
+        <script src="favicon.js"></script>
+        <script>
+        (function(){
+            var count = 0;
+            Piecon.setOptions({fallback: 'force'});
+            var i = setInterval(function(){
+              if (++count > 100) { Piecon.reset(); clearInterval(i); return false; }
+              Piecon.setProgress(count);
+            }, 250);
+        })();
+        </script>
+    <script src="socket.io.js"></script>
+    <script>
 
-	function emitTrack(data){
-		socket.emit('track',data);
-	}
-	function emitReset(data){
-		socket.emit('reset',data);
-	}
-	</script>
+    if(!("WebSocket" in window)){
+      alert("WebSockets not present, please upgrade your browser to the latest chrome, firefox, safari, or opera.");
+    }
+    var start_time = Math.floor(new Date().getTime()/1000);
+    var IP = '';
+    var channel;
+    var mycount = 0;
+    function msgspsec(){
+      mycount++;
+      now=Math.floor(new Date().getTime()/ 1000);
+      if(now > start_time){
+      $('#msgps').html(mycount/(now/start_time)+' messages per second.');
+      start_time=Math.floor(new Date().getTime()/1000);
+      mycount=0;
+      }
+    }
+    function realtime(data){
+    	msgspsec();
+      payload=eval(data);
+      var p = $("<div class='tweet' style='display:none'><div class='content'><a class='main-screenname' href='http://www.twitter.com/" + payload.user.screen_name + "/status/" + payload.id_str + "'>"+ payload.user.screen_name + "</a> " + payload.text + "</div></div>");
+      if($('#tweets div.tweet').size() > 100) {
+              $('#tweets div.tweet:last').slideDown(100, function() {
+                      $(this).remove();
+              });
+      }
+      $('#tweets').prepend(p);
+      p.slideDown(140);
+    }
+    var socket = io.connect('http://www.dizorg.net:443/');
+    socket.on('ip',function(IP){
+      channel = io.connect('http://www.dizorg.net:443/'+IP.ip);
+      channel.on('connect',function(){
+        channel.emit('channel',IP.ip);
+        console.log('channel: '+IP.ip);
+      });
+      channel.on('news',function(data){realtime(data)});
+    });
+    socket.on('news', function(data){realtime(data)});
+    socket.on('stat', function(stat){
+      stats = eval(stat);
+      $('#concurrent').html(stats.concurrent + ' connected clients. ');
+    });
+    socket.on('count',function(count){
+      $('#count').html(count+' messages received');
+    });
+    socket.on('connect',function(){
+      $.getJSON('getip.php',function(IP){
+        socket.emit('ip',IP);
+      });
+    });
+
+    function emitTrack(data){
+      socket.emit('track',data);
+    }
+    function emitReset(data){
+      socket.emit('reset',data);
+    }
+    </script>
     </head>
     <body>
         <!--[if lt IE 7]>
